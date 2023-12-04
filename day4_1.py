@@ -1,7 +1,2 @@
 import re
-score = 0
-with open("/home/ttammear/Downloads/input4", "r") as f:
-    for line in f.readlines():
-        (winning, mine) = [list(re.sub('\s+', ' ', x.strip()).split(' ')) for x in line.split(':')[1].split('|')]
-        score += int(2 ** (len([x for x in mine if x in winning])-1))
-print(score)
+print(sum(int(2**(len([x for x in m if x in w])-1)) for w, m in [[list(re.sub('\s+', ' ', x.strip()).split(' ')) for x in line.split(':')[1].split('|')] for line in open("4", "r").readlines()]))
