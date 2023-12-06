@@ -1,4 +1,5 @@
 import re
+import math
 part1 = False
 with open("input6", "r") as f:
     text = re.sub(' +', ' ' if part1 else '', f.read())
@@ -8,9 +9,14 @@ with open("input6", "r") as f:
     distances = parse(1)
     count = 1
     for time, dist in zip(times, distances):
-        ccount = 0
-        for i in range(time):
-            adist = (time - i) * i
-            ccount += 1 if adist > dist else 0
-        count *= ccount
+        r1 = (time + math.sqrt(time*time-4*dist))/2.0
+        r2 = (time - math.sqrt(time*time-4*dist))/2.0
+        r1 = int(math.ceil(r1)) if r2 > r1 else int(math.floor(r1))
+        r2 = int(math.ceil(r2)) if r1 > r2 else int(math.floor(r2))       
+        if (time-r1)*r1 == dist:
+            r1 = r1 + math.copysign(1, r2-r1)
+        if (time-r2)*r2 == dist:
+            r2 = r2 + math.copysign(1, r1-r2)
+        ans = abs(r1-r2)+1
+        count *= ans
     print(count)
